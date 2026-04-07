@@ -8,7 +8,7 @@
  * Requires an initialised Resend client and a Supabase client injected by the caller.
  *
  * What is sent:
- *   A plain-language alert that a sensitive topic arose in a session and Sage
+ *   A plain-language alert that a sensitive topic arose in a session and TrustFirst
  *   provided appropriate resources. No clinical content, no test scores,
  *   no conversation text is included.
  *
@@ -100,9 +100,9 @@ async function sendToRecipient(
 
   try {
     await resend.emails.send({
-      from:    'Sage <noreply@yourdomain.com>',   // replace with verified sender
+      from:    'TrustFirst <noreply@yourdomain.com>',   // replace with verified sender
       to:      toEmail,
-      subject: `Sage: A sensitive topic came up in ${subjectName}'s session`,
+      subject: `TrustFirst: A sensitive topic came up in ${subjectName}'s session`,
       html:    buildEmailHtml(recipientName, subjectName),
     });
     await logNotification(db, recipientId, flagAlertId, 'sent');
@@ -128,13 +128,13 @@ function buildEmailHtml(recipientName: string, subjectName: string): string {
   </style>
 </head>
 <body>
-  <div class="logo">SAGE</div>
+  <div class="logo">TRUSTFIRST</div>
 
   <p>Hi ${recipientName},</p>
 
   <p>
-    During a recent Sage session, ${subjectName} brought up a sensitive topic.
-    Sage responded with appropriate support and provided relevant resources,
+    During a recent TrustFirst session, ${subjectName} brought up a sensitive topic.
+    TrustFirst responded with appropriate support and provided relevant resources,
     including crisis contact information where applicable.
   </p>
 
@@ -154,10 +154,10 @@ function buildEmailHtml(recipientName: string, subjectName: string): string {
 
   <div class="footer">
     <p>
-      You received this because you are connected to ${subjectName} on Sage
+      You received this because you are connected to ${subjectName} on TrustFirst
       and have enabled flag notifications. Change this in your account settings.
     </p>
-    <p>Sage is not a medical service and does not provide emergency response.</p>
+    <p>TrustFirst is not a medical service and does not provide emergency response.</p>
   </div>
 </body>
 </html>`;

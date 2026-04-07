@@ -1,9 +1,9 @@
 # SCHEMA_CONTRACT.md
-# Sage — Backend Schema Contract
+# TrustFirst — Backend Schema Contract
 # Version 1.0
 
 This document specifies exactly what tables, columns, and column types the
-Sage backend scripts expect to find in Supabase.
+TrustFirst backend scripts expect to find in Supabase.
 
 The chat UI team owns the Supabase project and is responsible for creating
 these tables. The backend scripts (trigger_matcher.ts, test_engine.ts,

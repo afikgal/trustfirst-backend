@@ -1,4 +1,4 @@
-# Sage — Backend Engine
+# TrustFirst — Backend Engine
 
 AI Life Navigation Coach for aging adults. This repo contains the backend logic scripts that complement the chat UI and Supabase project owned by the frontend team.
 

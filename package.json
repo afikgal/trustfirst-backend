@@ -1,7 +1,7 @@
 {
-  "name": "sage-backend",
+  "name": "trustfirst-backend",
   "version": "1.0.0",
-  "description": "Sage AI Life Navigation Coach — backend engine scripts",
+  "description": "TrustFirst AI Life Navigation Coach — backend engine scripts",
   "private": true,
   "scripts": {
     "build": "tsc --noEmit",
