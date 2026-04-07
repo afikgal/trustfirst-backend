@@ -1,0 +1,374 @@
+################################################################################
+# CLINICAL TEST DEFINITION — SAGE Form 1 (Conversational Adaptation)
+#
+# Self-Administered Gerocognitive Examination — Form 1 (US, 2021)
+# Source: Scharre DW et al. Self-Administered Gerocognitive Examination (SAGE):
+#         A Brief Cognitive Assessment Instrument for Mild Cognitive Impairment.
+#         Alzheimer Dis Assoc Disord. 2006;20(4):259-265.
+# ©2007–2021 The Ohio State University. All Rights Reserved.
+# D. Scharre MD — sagetest.osu.edu
+#
+# ADAPTATION NOTES
+# The original SAGE Form 1 has 12 questions scored out of 22 points.
+# The following items were excluded because they require pen-and-paper visual
+# execution that cannot be administered in a conversational interface:
+#   Q7  — Figure construction (copy a 3-D drawing)
+#   Q8  — Clock drawing
+#   Q9  — Verbal fluency (write 12 animal names on paper)
+#   Q10 — Executive: Modified Trail Making Test
+#   Q11 — Executive: Spatial problem-solving puzzle
+#   Practice drawing before Q7/Q8 and examples before Q10/Q11
+#
+# Q2 (picture naming) is retained and delivered by displaying the original
+# SAGE Form 1 images directly in the chat interface.
+#
+# This adaptation scores 7 remaining items out of a maximum of 12 points.
+# Score bands are scaled proportionally from the validated 22-point thresholds.
+# This is a SCREENING TOOL — it does not substitute for clinical evaluation.
+# Cognitive domains NOT assessed in this version: visuospatial construction,
+# clock drawing, verbal fluency, executive trail-making, spatial reasoning.
+################################################################################
+
+meta:
+  id: "sage-form1-conversational"
+  name: "SAGE Form 1 — Conversational"
+  abbreviation: "SAGE-C"
+  version: "1.0"
+  source: "Scharre et al., 2006; ©2007–2021 The Ohio State University"
+  estimated_minutes: 5
+  validated_for:
+    - "Adults 50+"
+    - "Primary care and community cognitive screening"
+  adaptation_note: >
+    Conversational adaptation of SAGE Form 1. Five pen-and-paper items excluded.
+    Results should be interpreted with awareness that visuospatial, executive,
+    and verbal fluency domains are not assessed in this version.
+
+################################################################################
+# TRIGGERS
+################################################################################
+
+triggers:
+  keywords:
+    - "memory"
+    - "forgetting"
+    - "forgetful"
+    - "can't remember"
+    - "losing my mind"
+    - "dementia"
+    - "alzheimer"
+    - "cognitive"
+    - "confused"
+    - "thinking"
+    - "mental sharpness"
+    - "brain fog"
+    - "mixing things up"
+  themes:
+    - "user expresses concern about their own memory or cognitive sharpness"
+    - "user or caregiver notices changes in thinking, planning, or problem-solving"
+    - "user describes forgetting names, appointments, or recently learned information"
+    - "user mentions a family history of dementia and is seeking reassurance"
+    - "user asks if their forgetfulness is normal for their age"
+  suggest_line: |
+    It sounds like memory and thinking are on your mind. There's a short
+    cognitive check-in called the SAGE that I can walk you through — it takes
+    about five minutes and covers several areas of thinking and memory. Would
+    you like to give it a try?
+  activation_token: "ACTIVATE_TEST: sage-form1-conversational"
+
+################################################################################
+# SYSTEM INSTRUCTIONS FOR CLAUDE
+################################################################################
+
+instructions:
+  introduction: |
+    Introduce the SAGE warmly and briefly. Explain that it's a short cognitive
+    screening check-in — not a diagnosis — that looks at memory, reasoning,
+    language, and orientation. Let the user know it takes about five minutes
+    and that spelling doesn't count. Ask if they're ready to begin.
+
+    Important: before the first question, deliver the memory instruction
+    for question q6 exactly as written in that question's text field. This is
+    a prospective memory test — the user must hold the instruction throughout
+    the session. Do not remind them of it again until q12.
+
+  question_style: |
+    Ask one item at a time using the exact wording from the question text.
+    For image questions (q2a, q2b): display the associated image in the chat
+    interface and ask the user to name what they see. Accept any reasonable
+    response and move on — do not indicate whether they were right or wrong.
+    For open-ended questions: wait for a response, then move on without
+    evaluating the answer aloud. Keep a neutral, encouraging tone throughout.
+    Do not skip items or change their order.
+
+  completion: |
+    After q12 (the memory recall), let the user know you're reviewing their
+    responses. Do not reveal individual item scores or the numeric total
+    unprompted. Describe the overall picture in plain, warm language.
+    Always note that this is a screening tool and recommend they share the
+    results with their doctor, who can give a complete evaluation.
+    Acknowledge that some cognitive domains — like drawing and certain
+    language tasks — were not part of this version, so the results reflect
+    only a subset of cognitive functions.
+
+  refusal_handling: |
+    If the user declines to answer an item, acknowledge their choice without
+    pressure, record it as null (scored as zero), and move to the next item.
+    Note any skipped items when presenting results. Never revisit a declined item.
+
+################################################################################
+# QUESTIONS
+#
+# type: open_ended — free-text response; scored by backend using scoring_guide.
+# type: image      — displays image in chat UI, then awaits free-text response.
+# type: instruction — no response expected; delivers a message and continues.
+#
+# For open_ended and image types, scoring_guide replaces options:
+#   max:      maximum points this item can contribute
+#   criteria: ordered list evaluated top-to-bottom; first match wins.
+#     value:     points awarded
+#     condition: plain-English rule the backend applies to the user's response
+################################################################################
+
+questions:
+
+  # --- ORIENTATION ---
+
+  - id: "q1_month"
+    type: open_ended
+    domain: "Orientation"
+    text: "What is today's month?"
+    scoring_guide:
+      max: 1
+      criteria:
+        - value: 1
+          condition: "Correct month name or standard abbreviation (case-insensitive)"
+        - value: 0
+          condition: "Incorrect, blank, or null"
+
+  - id: "q1_date"
+    type: open_ended
+    domain: "Orientation"
+    text: "What is today's date — the day of the month?"
+    scoring_guide:
+      max: 2
+      criteria:
+        - value: 2
+          condition: "Exact correct calendar date"
+        - value: 1
+          condition: "Within 3 days of the correct date (either direction)"
+        - value: 0
+          condition: "More than 3 days off, blank, or null"
+
+  - id: "q1_year"
+    type: open_ended
+    domain: "Orientation"
+    text: "What year is it?"
+    scoring_guide:
+      max: 1
+      criteria:
+        - value: 1
+          condition: "Correct year"
+        - value: 0
+          condition: "Incorrect, blank, or null"
+
+  # --- PICTURE NAMING ---
+
+  - id: "q2a"
+    type: image
+    domain: "Language — Naming"
+    text: "What is this?"
+    image: "data/tests/assets/sage-form1-q2-wreath.png"
+    note: "Correct answer: wreath. Accept any reasonable variant."
+    scoring_guide:
+      max: 1
+      correct_answers: ["wreath", "wreath of leaves", "laurel wreath", "leaf wreath"]
+      criteria:
+        - value: 1
+          condition: "Response identifies the image as a wreath (spelling errors acceptable)"
+        - value: 0
+          condition: "Incorrect identification, blank, or null"
+
+  - id: "q2b"
+    type: image
+    domain: "Language — Naming"
+    text: "And this one — what is this?"
+    image: "data/tests/assets/sage-form1-q2-volcano.png"
+    note: "Correct answer: volcano. Accept any reasonable variant."
+    scoring_guide:
+      max: 1
+      correct_answers: ["volcano", "erupting volcano", "eruption", "volcanic eruption"]
+      criteria:
+        - value: 1
+          condition: "Response identifies the image as a volcano or eruption (spelling errors acceptable)"
+        - value: 0
+          condition: "Incorrect identification, blank, or null"
+
+  # --- ABSTRACTION ---
+
+  - id: "q3"
+    type: open_ended
+    domain: "Reasoning — Abstraction"
+    text: "How are a watch and a ruler similar? Write down how they are alike — they both are... what?"
+    scoring_guide:
+      max: 2
+      criteria:
+        - value: 2
+          condition: >
+            Abstract answer — identifies a shared function or category
+            (e.g., 'both measure', 'both are measuring instruments',
+            'both used to measure things', 'tools of measurement')
+        - value: 1
+          condition: >
+            Concrete answer — identifies a shared physical attribute only
+            (e.g., 'both have numbers', 'both are long', 'both are made of metal',
+            'both are small')
+        - value: 0
+          condition: "Incorrect, irrelevant, blank, or null"
+
+  # --- CALCULATION ---
+
+  - id: "q4"
+    type: open_ended
+    domain: "Reasoning — Calculation"
+    text: "How many nickels are in 60 cents?"
+    scoring_guide:
+      max: 1
+      correct_answers: ["12"]
+      criteria:
+        - value: 1
+          condition: "Answer is 12 (written as numeral or word)"
+        - value: 0
+          condition: "Any other answer, blank, or null"
+
+  - id: "q5"
+    type: open_ended
+    domain: "Reasoning — Calculation"
+    text: "You are buying $13.45 of groceries. How much change would you receive back from a $20 bill?"
+    scoring_guide:
+      max: 1
+      correct_answers: ["$6.55", "6.55", "6 dollars and 55 cents"]
+      criteria:
+        - value: 1
+          condition: "Answer is $6.55 in any reasonable format"
+        - value: 0
+          condition: "Any other answer, blank, or null"
+
+  # --- PROSPECTIVE MEMORY INSTRUCTION ---
+  # Delivered before any other questions begin (see instructions.introduction).
+  # No user response is expected. Points awarded in q12.
+
+  - id: "q6"
+    type: instruction
+    domain: "Memory — Prospective"
+    text: >
+      Before we get started, I'd like you to remember something for later.
+      At the very end of our check-in today, I'll ask you to recall a short
+      phrase. The phrase is: "I am done." Please hold onto that — I'll ask
+      for it at the end.
+    note: >
+      Deliver this instruction verbatim before question q1_month. Do not repeat
+      or hint at it again until q12. The exact wording 'I am done' must be
+      presented so the user can form an accurate memory of it.
+    scoring_guide:
+      max: 0
+
+  # --- PROSPECTIVE MEMORY RECALL ---
+  # Asked last, after all other questions are complete.
+
+  - id: "q12"
+    type: open_ended
+    domain: "Memory — Prospective"
+    text: >
+      We're almost finished. At the very beginning of our check-in today,
+      I gave you a short phrase to remember. Can you tell me what it was?
+    note: >
+      Per SAGE Form 1 scoring: exact phrase 'I am done' (nothing extra) = 2 pts;
+      any response containing the word 'done' = 1 pt; all else = 0 pts.
+    scoring_guide:
+      max: 2
+      criteria:
+        - value: 2
+          condition: "Exact phrase 'I am done' with nothing extra (case-insensitive)"
+        - value: 1
+          condition: "Response contains the word 'done' (e.g., 'yes I am done', 'done', 'I'm done')"
+        - value: 0
+          condition: "Does not contain 'done', blank, or null"
+
+################################################################################
+# SCORING
+# method: sum of all scored item values
+# Max: q1_month(1) + q1_date(2) + q1_year(1) + q2a(1) + q2b(1)
+#      + q3(2) + q4(1) + q5(1) + q6(0) + q12(2) = 12
+#
+# Bands scaled proportionally from validated SAGE 22-point thresholds:
+#   Original: ≥17 normal, 15–16 mild concern, ≤14 significant concern
+#   Scaled to /12: ≥10 normal, 8–9 mild concern, ≤7 significant concern
+################################################################################
+
+scoring:
+  method: sum
+  questions: [q1_month, q1_date, q1_year, q2a, q2b, q3, q4, q5, q6, q12]
+  max_score: 12
+  null_value: zero
+
+  bands:
+    - label: "Normal Range"
+      min: 10
+      max: 12
+      severity: low
+      interpretation: |
+        The score is within the normal range for the areas assessed. Affirm the
+        user's engagement and note that this covers a subset of cognitive domains.
+        Encourage them to mention any ongoing memory concerns to their doctor at
+        their next visit as part of routine care.
+
+    - label: "Some Concern"
+      min: 8
+      max: 9
+      severity: moderate
+      interpretation: |
+        The score suggests some areas worth discussing with a healthcare provider.
+        Frame this gently — a single screening is not a diagnosis. Encourage the
+        user to bring these results to their doctor, who can determine whether a
+        fuller cognitive evaluation is appropriate.
+
+    - label: "Further Evaluation Recommended"
+      min: 0
+      max: 7
+      severity: high
+      interpretation: |
+        The score suggests meaningful difficulty in one or more assessed areas.
+        Express care without alarm — many treatable conditions can affect cognitive
+        screening scores. Warmly and clearly encourage the user to share these
+        results with their doctor soon so they can arrange a complete evaluation.
+
+################################################################################
+# RESULT TEMPLATE
+################################################################################
+
+result_template:
+  prompt: |
+    The user has just completed the {{meta.name}} ({{meta.abbreviation}}),
+    a conversational adaptation of SAGE Form 1.
+
+    Scoring summary (do not read this aloud verbatim — use it to inform your response):
+    Total score: {{score}}/{{scoring.max_score}}
+    Band: {{band.label}} ({{band.severity}})
+    Interpretation: {{band.interpretation}}
+
+    Instructions for your response:
+    - Speak warmly and without clinical detachment. This topic can be frightening
+      for users — lead with reassurance that screening is a positive step.
+    - Do not state the numeric score unprompted. If the user directly asks, share it
+      along with clear context: it is out of 12, not 22, because several items were
+      adapted out for this format.
+    - Acknowledge the limitations of this version: visuospatial construction,
+      clock drawing, verbal fluency, executive trail-making, and spatial reasoning
+      were not assessed. A complete SAGE or clinical evaluation covers these areas.
+    - Frame the result constructively. Even a low score is a starting point, not
+      a verdict — many conditions that affect cognitive screening are treatable.
+    - Close by recommending the user share these results with their doctor, who can
+      decide whether a full neuropsychological evaluation is appropriate.
+    - If the severity is high, gently emphasize the importance of following up soon,
+      without causing panic.

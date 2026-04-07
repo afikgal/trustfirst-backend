@@ -1,0 +1,316 @@
+################################################################################
+# CLINICAL TEST DEFINITION — PHQ-9
+# Patient Health Questionnaire — 9-Item Depression Scale
+#
+# Source: Kroenke K, Spitzer RL, Williams JBW. The PHQ-9: Validity of a brief
+#         depression severity measure. J Gen Intern Med. 2001;16(9):606-613.
+#
+# The PHQ-9 is in the public domain and may be reproduced without permission.
+# Developed by Drs. Robert L. Spitzer, Janet B.W. Williams, and Kurt Kroenke.
+################################################################################
+
+meta:
+  id: "phq9"
+  name: "Patient Health Questionnaire – 9"
+  abbreviation: "PHQ-9"
+  version: "1.0"
+  source: "Kroenke, Spitzer & Williams, J Gen Intern Med, 2001"
+  estimated_minutes: 3
+  validated_for:
+    - "Adults 18+"
+    - "Older adults"
+    - "Primary care settings"
+
+################################################################################
+# TRIGGERS
+################################################################################
+
+triggers:
+  keywords:
+    - "sad"
+    - "depressed"
+    - "depression"
+    - "hopeless"
+    - "no energy"
+    - "exhausted"
+    - "can't sleep"
+    - "sleeping too much"
+    - "not enjoying"
+    - "low mood"
+    - "worthless"
+    - "guilty"
+    - "can't concentrate"
+    - "not hungry"
+    - "overeating"
+    - "better off dead"
+    - "hurting myself"
+  themes:
+    - "user describes persistent low mood or feeling down"
+    - "user mentions loss of interest or pleasure in activities they used to enjoy"
+    - "user reports changes in sleep, appetite, or energy lasting more than a few days"
+    - "user expresses feelings of worthlessness, guilt, or being a burden"
+    - "user mentions difficulty concentrating or slowed thinking"
+    - "user makes any reference to self-harm or not wanting to be here"
+  suggest_line: |
+    It sounds like you've been carrying some heavy feelings lately. There's a short
+    questionnaire called the PHQ-9 that helps us understand how you've been feeling
+    over the past two weeks — it only takes about 3 minutes. Would you be open to
+    trying it?
+  activation_token: "ACTIVATE_TEST: phq9"
+
+################################################################################
+# SYSTEM INSTRUCTIONS FOR CLAUDE
+################################################################################
+
+instructions:
+  introduction: |
+    Introduce the PHQ-9 warmly and briefly. Let the user know it asks about
+    nine common symptoms of depression over the past two weeks, that there are
+    no right or wrong answers, and that their honesty helps get the clearest
+    picture. Ask if they're ready to begin.
+
+  question_style: |
+    Ask one question at a time using the exact wording from the question text.
+    After each question, present all four answer options clearly — label and
+    meaning — so the user can choose without guessing.
+    Wait for their response before moving to the next question.
+    If their answer is ambiguous, gently reflect it back and ask which option
+    fits best. Do not rephrase questions or change their order.
+    Keep your tone conversational and unhurried — this is a check-in, not
+    an interrogation.
+
+  completion: |
+    When all nine questions are answered, let the user know you're taking a
+    moment to look over what they shared. Do not state the numeric score
+    directly. Explain the results in plain, warm language — what the score
+    range generally means and what steps might be helpful.
+    Always close by recommending they share the results with their doctor or
+    a mental health professional, who can give them a full picture.
+
+  refusal_handling: |
+    If the user declines to answer a question, acknowledge their choice
+    without pressure, record it as null, and move on to the next question.
+    Note any skipped items when presenting results. Never push or repeat
+    a question the user has declined.
+
+################################################################################
+# QUESTIONS
+# Exact wording from the validated PHQ-9 instrument.
+# All questions share the same four-point frequency scale (0–3).
+# Time frame: "Over the last two weeks, how often have you been bothered by..."
+################################################################################
+
+questions:
+  - id: "q1"
+    text: "Over the last two weeks, how often have you been bothered by little interest or pleasure in doing things?"
+    options:
+      - label: "Not at all"
+        value: 0
+      - label: "Several days"
+        value: 1
+      - label: "More than half the days"
+        value: 2
+      - label: "Nearly every day"
+        value: 3
+
+  - id: "q2"
+    text: "Over the last two weeks, how often have you been bothered by feeling down, depressed, or hopeless?"
+    options:
+      - label: "Not at all"
+        value: 0
+      - label: "Several days"
+        value: 1
+      - label: "More than half the days"
+        value: 2
+      - label: "Nearly every day"
+        value: 3
+
+  - id: "q3"
+    text: "Over the last two weeks, how often have you been bothered by trouble falling or staying asleep, or sleeping too much?"
+    options:
+      - label: "Not at all"
+        value: 0
+      - label: "Several days"
+        value: 1
+      - label: "More than half the days"
+        value: 2
+      - label: "Nearly every day"
+        value: 3
+
+  - id: "q4"
+    text: "Over the last two weeks, how often have you been bothered by feeling tired or having little energy?"
+    options:
+      - label: "Not at all"
+        value: 0
+      - label: "Several days"
+        value: 1
+      - label: "More than half the days"
+        value: 2
+      - label: "Nearly every day"
+        value: 3
+
+  - id: "q5"
+    text: "Over the last two weeks, how often have you been bothered by poor appetite or overeating?"
+    options:
+      - label: "Not at all"
+        value: 0
+      - label: "Several days"
+        value: 1
+      - label: "More than half the days"
+        value: 2
+      - label: "Nearly every day"
+        value: 3
+
+  - id: "q6"
+    text: "Over the last two weeks, how often have you been bothered by feeling bad about yourself — or that you are a failure or have let yourself or your family down?"
+    options:
+      - label: "Not at all"
+        value: 0
+      - label: "Several days"
+        value: 1
+      - label: "More than half the days"
+        value: 2
+      - label: "Nearly every day"
+        value: 3
+
+  - id: "q7"
+    text: "Over the last two weeks, how often have you been bothered by trouble concentrating on things, such as reading the newspaper or watching television?"
+    options:
+      - label: "Not at all"
+        value: 0
+      - label: "Several days"
+        value: 1
+      - label: "More than half the days"
+        value: 2
+      - label: "Nearly every day"
+        value: 3
+
+  - id: "q8"
+    text: "Over the last two weeks, how often have you been bothered by moving or speaking so slowly that other people could have noticed — or the opposite, being so fidgety or restless that you have been moving around a lot more than usual?"
+    options:
+      - label: "Not at all"
+        value: 0
+      - label: "Several days"
+        value: 1
+      - label: "More than half the days"
+        value: 2
+      - label: "Nearly every day"
+        value: 3
+
+  - id: "q9"
+    text: "Over the last two weeks, how often have you been bothered by thoughts that you would be better off dead, or of hurting yourself in some way?"
+    note: "Critical flag item. Any answer ≥ 1 triggers an immediate safety response before results are delivered."
+    options:
+      - label: "Not at all"
+        value: 0
+      - label: "Several days"
+        value: 1
+      - label: "More than half the days"
+        value: 2
+      - label: "Nearly every day"
+        value: 3
+
+################################################################################
+# SCORING
+# method: sum — total of all nine item values (range 0–27)
+# null_value: zero — consistent with standard PHQ-9 clinical guidance
+################################################################################
+
+scoring:
+  method: sum
+  questions: [q1, q2, q3, q4, q5, q6, q7, q8, q9]
+  max_score: 27
+  null_value: zero
+
+  bands:
+    - label: "Minimal"
+      min: 0
+      max: 4
+      severity: low
+      interpretation: |
+        The score suggests minimal depressive symptoms — likely not clinically
+        significant at this time. Affirm the user's openness to checking in and
+        encourage them to reach out again if things shift.
+
+    - label: "Mild"
+      min: 5
+      max: 9
+      severity: mild
+      interpretation: |
+        The score indicates mild depressive symptoms. These are worth keeping an
+        eye on. Gently suggest monitoring over the coming weeks and mentioning
+        these feelings to their doctor at their next visit.
+
+    - label: "Moderate"
+      min: 10
+      max: 14
+      severity: moderate
+      interpretation: |
+        The score indicates moderate depression. This level often benefits from
+        professional support. Encourage the user to schedule a conversation with
+        their doctor or a mental health professional in the near term.
+
+    - label: "Moderately Severe"
+      min: 15
+      max: 19
+      severity: high
+      interpretation: |
+        The score indicates moderately severe depression. Express care and
+        encourage the user to reach out to a healthcare provider soon.
+        Treatment at this level is effective and help is available.
+
+    - label: "Severe"
+      min: 20
+      max: 27
+      severity: very_high
+      interpretation: |
+        The score indicates severe depression. Warmly and clearly let the user
+        know that these feelings deserve immediate attention from a professional.
+        Provide crisis resources and encourage them not to face this alone.
+
+  flags:
+    - question_id: "q9"
+      operator: ">="
+      value: 1
+      severity: critical
+      alert: |
+        The user indicated they have been having thoughts of being better off
+        dead or of hurting themselves. Before presenting any results:
+        — Acknowledge what they shared directly and with compassion.
+        — Do not minimize, rationalize, or rush past it.
+        — Let them know these thoughts are important and that support is available.
+        — Provide the 988 Suicide & Crisis Lifeline (call or text 988) and the
+          Crisis Text Line (text HOME to 741741).
+        — Encourage them to talk to someone they trust or a healthcare provider today.
+        Only after addressing this should you gently transition to the overall results.
+
+################################################################################
+# RESULT TEMPLATE
+################################################################################
+
+result_template:
+  prompt: |
+    The user has just completed the {{meta.name}} ({{meta.abbreviation}}).
+
+    Scoring summary (do not read this aloud verbatim — use it to inform your response):
+    Total score: {{score}}/{{scoring.max_score}}
+    Band: {{band.label}} ({{band.severity}})
+    Interpretation: {{band.interpretation}}
+
+    {{#if flags_triggered}}
+    ⚠ Flag triggered — follow these instructions before presenting results:
+    {{flag.alert}}
+    {{/if}}
+
+    Instructions for your response:
+    - Speak warmly and conversationally, as though you're a trusted friend who
+      happens to understand this topic well.
+    - Do not state the numeric score unprompted — describe what it means instead.
+      If the user directly asks for their number, you may share it.
+    - Frame findings constructively. Even moderate or severe scores are a signal
+      that help exists, not a verdict.
+    - Acknowledge the courage it takes to answer these questions honestly.
+    - Close by recommending they share these results with their doctor or a mental
+      health professional, who can provide a full evaluation and next steps.
+    - If the severity is high or very_high, gently name crisis resources
+      (988 Lifeline, Crisis Text Line) as an option available to them right now.

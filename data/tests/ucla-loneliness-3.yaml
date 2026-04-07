@@ -1,0 +1,224 @@
+################################################################################
+# CLINICAL TEST DEFINITION — UCLA 3-Item Loneliness Scale
+#
+# This is the validated short form of the UCLA Loneliness Scale, developed for
+# use in large population surveys where administering the full 20-item Version 3
+# (Russell, 1996) is not practical.
+#
+# Source: Hughes ME, Waite LJ, Hawkley LC, Cacioppo JT. A short scale for
+#         measuring loneliness in large surveys: Results from two population-based
+#         studies. Research on Aging. 2004;26(6):655–672.
+#
+# Derived from: UCLA Loneliness Scale Version 3 (Russell, 1996).
+# Three items selected from the full scale; no reverse-scoring required — all
+# items are negatively worded.
+#
+# Reference instrument: https://www.icmha.org/wp-content/uploads/2020/02/UCLA-Loneliness-Scale.pdf
+################################################################################
+
+meta:
+  id: "ucla-loneliness-3"
+  name: "UCLA 3-Item Loneliness Scale"
+  abbreviation: "UCLA-3"
+  version: "1.0"
+  source: "Hughes, Waite, Hawkley & Cacioppo, Research on Aging, 2004"
+  estimated_minutes: 2
+  validated_for:
+    - "Adults 18+"
+    - "Older adults"
+    - "Community and population survey settings"
+
+################################################################################
+# TRIGGERS
+################################################################################
+
+triggers:
+  keywords:
+    - "lonely"
+    - "loneliness"
+    - "alone"
+    - "isolated"
+    - "no friends"
+    - "no one to talk to"
+    - "left out"
+    - "no companionship"
+    - "by myself"
+    - "nobody cares"
+    - "disconnected"
+    - "no one understands"
+    - "don't belong"
+    - "cut off"
+  themes:
+    - "user expresses feeling alone or lacking social connection"
+    - "user describes feeling excluded from social groups or activities"
+    - "user mentions having no one to confide in or turn to"
+    - "user has recently experienced a major change in their social world (retirement, bereavement, relocation, end of a relationship)"
+    - "user describes rarely leaving home or having limited contact with others"
+    - "user mentions feeling misunderstood or unseen by people around them"
+  suggest_line: |
+    It sounds like you might be feeling a bit disconnected lately. There's a short
+    three-question check-in called the UCLA Loneliness Scale that can help us
+    understand how you've been feeling socially. It only takes about two minutes —
+    would you like to try it?
+  activation_token: "ACTIVATE_TEST: ucla-loneliness-3"
+
+################################################################################
+# SYSTEM INSTRUCTIONS FOR CLAUDE
+################################################################################
+
+instructions:
+  introduction: |
+    Introduce the check-in warmly and briefly. Let the user know there are just
+    three questions about how they've been feeling socially, that there are no
+    right or wrong answers, and that their honest response is what matters most.
+    Ask if they're ready to begin.
+
+  question_style: |
+    Ask one question at a time using the exact wording from the question text.
+    After each question, present all three answer options clearly so the user
+    can choose without guessing.
+    Wait for their response before moving on.
+    If the answer is ambiguous, gently reflect it back and ask which option
+    fits best. Do not rephrase questions or change their order.
+    Keep the tone warm and conversational — this is a brief check-in, not
+    a formal interview.
+
+  completion: |
+    When all three questions are answered, let the user know you're looking
+    over what they shared. Do not state the numeric score directly. Describe
+    what their responses suggest in plain, compassionate language.
+    Affirm that feelings of loneliness are very common — especially during
+    major life transitions — and are not a character flaw.
+    Close by noting that sharing these feelings with a doctor, counselor, or
+    trusted person in their life is a meaningful next step.
+
+  refusal_handling: |
+    If the user declines to answer a question, acknowledge their choice without
+    pressure, record it as null, and move on to the next question. Note any
+    skipped questions when presenting results. Never push or revisit a question
+    the user has declined.
+
+################################################################################
+# QUESTIONS
+# Exact wording from Hughes et al. (2004), drawn from the UCLA Loneliness Scale.
+# Time frame is general (ongoing feeling), not a defined window like "past two weeks."
+# Response scale: Hardly Ever (1) / Some of the Time (2) / Often (3)
+################################################################################
+
+questions:
+  - id: "q1"
+    text: "How often do you feel that you lack companionship?"
+    options:
+      - label: "Hardly ever"
+        value: 1
+      - label: "Some of the time"
+        value: 2
+      - label: "Often"
+        value: 3
+
+  - id: "q2"
+    text: "How often do you feel left out?"
+    options:
+      - label: "Hardly ever"
+        value: 1
+      - label: "Some of the time"
+        value: 2
+      - label: "Often"
+        value: 3
+
+  - id: "q3"
+    text: "How often do you feel isolated from others?"
+    options:
+      - label: "Hardly ever"
+        value: 1
+      - label: "Some of the time"
+        value: 2
+      - label: "Often"
+        value: 3
+
+################################################################################
+# SCORING
+# method: sum — total of all three item values (range 3–9)
+# No reverse-scoring: all items are negatively worded.
+# null_value: skip — adjusting for any refused item preserves accuracy on
+#             a 3-item scale where a single answer carries 33% weight.
+################################################################################
+
+scoring:
+  method: sum
+  questions: [q1, q2, q3]
+  max_score: 9
+  null_value: skip
+
+  bands:
+    - label: "Not Lonely"
+      min: 3
+      max: 3
+      severity: low
+      interpretation: |
+        The responses suggest minimal loneliness at this time. The user appears
+        to feel socially connected. Acknowledge this positively and note that
+        checking in periodically — especially during life transitions — is always worthwhile.
+
+    - label: "Mildly Lonely"
+      min: 4
+      max: 5
+      severity: mild
+      interpretation: |
+        The responses suggest some feelings of loneliness. These are common and
+        often tied to life changes or busy periods. Gently encourage the user to
+        nurture connections that feel meaningful, even in small ways, and to mention
+        these feelings to their doctor if they persist.
+
+    - label: "Moderately Lonely"
+      min: 6
+      max: 7
+      severity: moderate
+      interpretation: |
+        The responses suggest a moderate level of loneliness. These feelings are
+        worth taking seriously — persistent loneliness can affect physical and
+        emotional health. Encourage the user to share how they're feeling with
+        a doctor, counselor, or someone they trust, and explore local or online
+        community resources together.
+
+    - label: "Very Lonely"
+      min: 8
+      max: 9
+      severity: high
+      interpretation: |
+        The responses suggest significant, persistent loneliness. Express genuine
+        care and warmth — remind the user that these feelings are valid and that
+        many people experience deep loneliness, especially after major life changes.
+        Encourage them to speak with a healthcare provider or counselor, and offer
+        to explore specific community, volunteer, or social programs that might help.
+
+################################################################################
+# RESULT TEMPLATE
+################################################################################
+
+result_template:
+  prompt: |
+    The user has just completed the {{meta.name}} ({{meta.abbreviation}}).
+
+    Scoring summary (do not read this aloud verbatim — use it to inform your response):
+    Total score: {{score}}/{{scoring.max_score}}
+    Band: {{band.label}} ({{band.severity}})
+    Interpretation: {{band.interpretation}}
+
+    {{#if flags_triggered}}
+    ⚠ Flag triggered — follow these instructions before presenting results:
+    {{flag.alert}}
+    {{/if}}
+
+    Instructions for your response:
+    - Speak warmly and conversationally. This is a sensitive topic — lead with empathy.
+    - Do not state the numeric score unprompted. If the user directly asks, you may share it.
+    - Normalize the experience: loneliness is extremely common, especially among older adults
+      navigating retirement, bereavement, health changes, or reduced mobility.
+    - Frame findings constructively. Even high scores are a starting point, not a verdict.
+    - Acknowledge the courage it takes to be honest about feeling alone.
+    - If the severity is moderate or high, gently name specific next steps:
+      speaking with a doctor, calling a local senior center, or reaching out
+      to a community program.
+    - Close by recommending they share these feelings with a qualified clinician
+      who can offer a fuller picture and personalized support.
