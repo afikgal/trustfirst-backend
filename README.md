@@ -58,3 +58,10 @@ ANTHROPIC_API_KEY
 1. Copy any file in `data/action_plans/` as a starting point
 2. Save as `data/action_plans/{life_event_id}.yaml`
 3. Call `seedActionPlan(db, userId, lifeEventDbId, eventId)` when the life event is confirmed
+
+## Remote
+
+```bash
+git remote add origin https://github.com/afikgal/trustfirst-backend.git
+git push -u origin main
+```
