@@ -1,0 +1,97 @@
+################################################################################
+# ACTION PLAN — RETIREMENT
+# File: data/action_plans/retirement.yaml
+# Triggered when life event 'retirement' is confirmed.
+################################################################################
+
+meta:
+  id: retirement
+  life_event: Retirement
+  title: "Your Retirement Action Plan"
+  description: >
+    Retiring is one of the biggest transitions you'll make. This checklist covers
+    the financial, health, and social steps most people need to work through in
+    the first year. Tackle the high-priority items first — the rest can follow
+    at your own pace.
+
+items:
+  - key: medicare_enrollment
+    title: "Enroll in Medicare on time"
+    explanation: >
+      If you're turning 65 or losing employer coverage, you have a 7-month window
+      to enroll without a late penalty. Missing it can mean higher premiums for life.
+    priority: high
+    resource_url: https://www.ssa.gov/medicare/
+
+  - key: social_security_timing
+    title: "Decide when to claim Social Security"
+    explanation: >
+      Claiming early (62) reduces your monthly benefit permanently. Waiting until 70
+      maximizes it. The right time depends on your health, other income, and
+      whether a spouse's benefit is in play.
+    priority: high
+    resource_url: https://www.ssa.gov/benefits/retirement/
+
+  - key: health_insurance_bridge
+    title: "Arrange health coverage before Medicare starts"
+    explanation: >
+      If you retire before 65, you'll need to bridge the gap — COBRA, a marketplace
+      plan, or a spouse's plan are the main options. Don't leave this uncovered.
+    priority: high
+    resource_url: https://www.healthcare.gov/
+
+  - key: retirement_income_plan
+    title: "Map out your retirement income sources"
+    explanation: >
+      List every income source: Social Security, pensions, 401(k)/IRA withdrawals,
+      part-time work, rental income. Then compare against your monthly budget.
+      A fee-only financial advisor can help if the picture is complex.
+    priority: high
+
+  - key: rmd_planning
+    title: "Understand Required Minimum Distributions (RMDs)"
+    explanation: >
+      Starting at age 73 (under current law), you must take annual withdrawals from
+      traditional IRAs and 401(k)s or face a steep penalty. Plan this in advance
+      to minimize taxes.
+    priority: medium
+    resource_url: https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-required-minimum-distributions-rmds
+
+  - key: beneficiary_review
+    title: "Review and update all beneficiary designations"
+    explanation: >
+      Retirement accounts and life insurance pass directly to named beneficiaries —
+      bypassing your will. Check every account and update after any major life change.
+    priority: medium
+
+  - key: estate_documents
+    title: "Get your estate documents in order"
+    explanation: >
+      At minimum: a will, a durable power of attorney, and a healthcare proxy
+      (medical power of attorney). An elder law attorney can prepare these affordably.
+    priority: medium
+    resource_url: https://www.naela.org/
+
+  - key: social_connections
+    title: "Plan for social connection and purpose"
+    explanation: >
+      Loss of work structure and daily colleagues is one of the most underestimated
+      retirement challenges. Volunteering, classes, clubs, and part-time work all help.
+      Isolation is a serious health risk — treat this like a health task.
+    priority: medium
+
+  - key: home_assessment
+    title: "Assess your home for aging in place"
+    explanation: >
+      Consider grab bars, improved lighting, single-floor living options, and entry
+      accessibility now — before they're urgent. Small changes are far cheaper than
+      big ones done under pressure.
+    priority: low
+
+  - key: long_term_care_plan
+    title: "Make a plan for long-term care"
+    explanation: >
+      Most people will need some form of long-term care. Options include LTC insurance,
+      hybrid life/LTC policies, self-funding, or Medicaid planning. The earlier you
+      address this, the more choices you have.
+    priority: low

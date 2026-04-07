@@ -1,0 +1,300 @@
+################################################################################
+# CLINICAL TEST DEFINITION TEMPLATE
+# One file per test. Scoring is fully declarative — backend is a dumb calculator.
+# Claude conducts the conversation; code handles math and state.
+################################################################################
+
+meta:
+  id: "test-id-slug"                    # unique identifier, e.g. "phq9", "mmse"
+  name: "Full Test Name"                # e.g. "PHQ-9 Patient Health Questionnaire"
+  abbreviation: "ACRONYM"
+  version: "1.0"
+  source: "Author / Publisher, Year"
+  estimated_minutes: 5
+  validated_for:
+    - "Adults 18+"
+
+################################################################################
+# TRIGGERS
+# Tells the system prompt which signals should prompt Claude to suggest this test.
+# Claude is instructed at session start to watch for these and propose accordingly.
+#
+# keywords     — words/phrases in user message that are relevant
+# themes       — higher-level conversational themes Claude should recognize
+# suggest_line — the exact line Claude should say when proposing the test
+#                (keeps tone consistent across sessions)
+################################################################################
+
+triggers:
+  keywords:
+    - "sad"
+    - "depressed"
+    - "hopeless"
+    - "no energy"
+    - "can't sleep"
+    - "not enjoying"
+    - "low mood"
+  themes:
+    - "user describes persistent low mood or loss of interest"
+    - "user mentions changes in sleep, appetite, or energy"
+    - "user expresses feelings of worthlessness or guilt"
+  suggest_line: |
+    It sounds like you've been going through a difficult time. There's a short
+    questionnaire called the [ACRONYM] that can help us understand how you've
+    been feeling. It only takes about [estimated_minutes] minutes — would you
+    like to give it a try?
+  activation_token: "ACTIVATE_TEST: test-id-slug"
+    # Claude appends this token (hidden from user) when the user agrees.
+    # Backend intercepts it, loads this YAML, and switches session to test mode.
+
+################################################################################
+# SYSTEM INSTRUCTIONS FOR CLAUDE
+################################################################################
+
+instructions:
+  introduction: |
+    Introduce the test warmly and briefly. Tell the user what it measures,
+    approximately how long it takes, and that there are no right or wrong answers.
+    Ask if they're ready to begin.
+
+  question_style: |
+    Ask one question at a time. Use the exact wording from the question text.
+    Present the answer options clearly after each question.
+    Wait for the user's response before proceeding.
+    If the response is ambiguous, gently clarify using the answer options.
+    Do not skip questions or change their order.
+
+  completion: |
+    When all questions are answered, tell the user you're reviewing their responses.
+    Do not reveal the numeric score directly — explain what it means in plain
+    language, with empathy and without alarm.
+    Always recommend they discuss results with a qualified clinician.
+
+  refusal_handling: |
+    If the user declines to answer a question, record it as null and move on.
+    Note any skipped questions in the interpretation. Do not pressure them.
+
+################################################################################
+# QUESTIONS
+################################################################################
+
+questions:
+  - id: "q1"
+    text: "Over the last two weeks, how often have you been bothered by [symptom]?"
+    note: "Optional internal note — not shown to user."
+    options:
+      - label: "Not at all"
+        value: 0
+      - label: "Several days"
+        value: 1
+      - label: "More than half the days"
+        value: 2
+      - label: "Nearly every day"
+        value: 3
+
+  - id: "q2"
+    text: "Over the last two weeks, how often have you experienced [symptom 2]?"
+    options:
+      - label: "Not at all"
+        value: 0
+      - label: "Several days"
+        value: 1
+      - label: "More than half the days"
+        value: 2
+      - label: "Nearly every day"
+        value: 3
+
+  # Add additional questions following the same pattern...
+
+################################################################################
+# SCORING — fully declarative, backend executes mechanically
+#
+# method: sum
+#   Total = sum of all answer values.
+#
+# method: weighted_sum
+#   Total = sum of (answer_value × weight) for each question.
+#   Requires a weights map.
+#
+# method: subscale_sum
+#   Each subscale is scored independently (sum or weighted_sum).
+#   An optional composite score can be computed from subscale totals.
+#   Each subscale has its own bands and interpretation.
+#   Composite bands are optional — omit if only subscale results are reported.
+#
+# null_value: how to treat skipped/refused questions in the sum.
+#   "zero"   — count as 0 (most common, conservative)
+#   "skip"   — exclude from sum and adjust max_score proportionally
+#   "abort"  — stop scoring, flag as incomplete
+################################################################################
+
+scoring:
+  method: sum                           # sum | weighted_sum | subscale_sum
+  questions: [q1, q2]                  # ordered list of question ids to include
+  max_score: 6                          # theoretical maximum for this method
+  null_value: zero                      # zero | skip | abort
+
+  # --- weighted_sum only ---
+  # weights:
+  #   q1: 1.5
+  #   q2: 1.0
+
+  # --- subscale_sum only ---
+  # subscales:
+  #   - id: "cognitive"
+  #     name: "Cognitive"
+  #     method: sum                     # sum or weighted_sum per subscale
+  #     questions: [q1, q2]
+  #     max_score: 10
+  #     null_value: zero
+  #     # weights:                      # only if method: weighted_sum
+  #     #   q1: 2.0
+  #     #   q2: 1.0
+  #     bands:
+  #       - label: "Normal"
+  #         min: 8
+  #         max: 10
+  #         severity: low
+  #         interpretation: |
+  #           Cognitive performance appears within normal range.
+  #       - label: "Impaired"
+  #         min: 0
+  #         max: 7
+  #         severity: high
+  #         interpretation: |
+  #           Scores suggest possible cognitive impairment. Recommend further evaluation.
+  #
+  #   - id: "functional"
+  #     name: "Functional"
+  #     method: sum
+  #     questions: [q3, q4]
+  #     max_score: 6
+  #     null_value: zero
+  #     bands:
+  #       - label: "Independent"
+  #         min: 5
+  #         max: 6
+  #         severity: low
+  #         interpretation: |
+  #           User appears functionally independent in assessed domains.
+  #       - label: "Some assistance needed"
+  #         min: 0
+  #         max: 4
+  #         severity: moderate
+  #         interpretation: |
+  #           Some functional limitations noted. Consider occupational therapy referral.
+  #
+  # composite:                          # optional — omit if not reporting a total
+  #   method: sum                       # sum of subscale totals
+  #   max_score: 16
+  #   bands:
+  #     - label: "Within normal limits"
+  #       min: 12
+  #       max: 16
+  #       severity: low
+  #       interpretation: |
+  #         Overall performance is within normal limits across assessed domains.
+  #     - label: "Concern"
+  #       min: 0
+  #       max: 11
+  #       severity: high
+  #       interpretation: |
+  #         Overall scores suggest areas of concern. A comprehensive clinical
+  #         evaluation is recommended.
+
+  # --- bands (used by sum and weighted_sum; also per subscale above) ---
+  bands:
+    - label: "Minimal"
+      min: 0
+      max: 4
+      severity: low
+      interpretation: |
+        The score suggests minimal or no clinically significant symptoms at this time.
+        Encourage the user and note that occasional low mood is a normal part of life.
+
+    - label: "Mild"
+      min: 5
+      max: 9
+      severity: mild
+      interpretation: |
+        The score indicates mild symptoms. Suggest monitoring over the coming weeks
+        and considering a conversation with a healthcare provider if they persist.
+
+    - label: "Moderate"
+      min: 10
+      max: 14
+      severity: moderate
+      interpretation: |
+        The score indicates moderate symptoms that may benefit from professional support.
+        Encourage scheduling a conversation with a doctor or mental health professional.
+
+    - label: "Moderately Severe"
+      min: 15
+      max: 19
+      severity: high
+      interpretation: |
+        The score indicates moderately severe symptoms. Encourage the user to seek
+        professional evaluation soon. Express care without causing alarm.
+
+    - label: "Severe"
+      min: 20
+      max: 27
+      severity: very_high
+      interpretation: |
+        The score indicates severe symptoms. Warmly and clearly encourage the user
+        to reach out to a healthcare professional or crisis support as soon as possible.
+
+  # --- flags ---
+  # Fires when a specific answer value on a specific question meets the threshold.
+  # Evaluated before result delivery. Can fire independently of band.
+  flags:
+    - question_id: "q9"
+      operator: ">="                    # >= | > | == | <= | <
+      value: 1
+      severity: critical
+      alert: |
+        The user indicated some difficulty with [sensitive item].
+        Respond with compassion. Acknowledge what they shared, do not minimize it,
+        and provide appropriate crisis resources before presenting overall results.
+
+################################################################################
+# RESULT TEMPLATE
+# Filled server-side before injection into Claude.
+# {{}} tokens are replaced by backend before the API call.
+# Claude never performs scoring — it only receives the completed interpretation.
+#
+# For subscale_sum, {{subscales}} is an array rendered as:
+#   Subscale: Cognitive — Score: 7/10 — Band: Impaired
+#   [interpretation text]
+################################################################################
+
+result_template:
+  prompt: |
+    The user has just completed the {{meta.name}} ({{meta.abbreviation}}).
+
+    Scoring summary (do not read this aloud verbatim — use it to inform your response):
+    {{#if subscales}}
+    {{#each subscales}}
+    Subscale: {{name}} — Score: {{score}}/{{max_score}} — Band: {{band.label}} ({{band.severity}})
+    Interpretation: {{band.interpretation}}
+    {{/each}}
+    {{#if composite}}
+    Composite — Score: {{composite.score}}/{{composite.max_score}} — Band: {{composite.band.label}}
+    Interpretation: {{composite.band.interpretation}}
+    {{/if}}
+    {{else}}
+    Total score: {{score}}/{{scoring.max_score}}
+    Band: {{band.label}} ({{band.severity}})
+    Interpretation: {{band.interpretation}}
+    {{/if}}
+
+    {{#if flags_triggered}}
+    ⚠ Flag triggered — follow these instructions before presenting results:
+    {{flag.alert}}
+    {{/if}}
+
+    Instructions for your response:
+    - Explain results conversationally, warmly, and in plain language.
+    - Do not use clinical jargon or state the numeric score unless the user asks.
+    - Do not alarm the user — frame findings constructively.
+    - End by recommending they discuss results with a qualified clinician.

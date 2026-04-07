@@ -1,0 +1,106 @@
+################################################################################
+# ACTION PLAN — CARE TRANSITION (ASSISTED LIVING / MEMORY CARE / SNF)
+# File: data/action_plans/care_transition.yaml
+################################################################################
+
+meta:
+  id: care_transition
+  life_event: Care Transition
+  title: "Planning Your Care Transition"
+  description: >
+    Moving to a new level of care — whether assisted living, memory care, or a
+    skilled nursing facility — is a major decision with financial, legal, and
+    emotional dimensions. This plan helps you evaluate options carefully and
+    protect your interests through the process.
+
+items:
+  - key: care_needs_assessment
+    title: "Get a formal care needs assessment"
+    explanation: >
+      A geriatric care manager or social worker can assess what level of care
+      is genuinely needed — and what can still be managed at home with support.
+      This assessment should drive the decision, not just availability or cost.
+    priority: high
+
+  - key: understand_care_levels
+    title: "Understand the differences between care settings"
+    explanation: >
+      Independent living, assisted living, memory care, and skilled nursing
+      facilities offer very different levels of support and cost very differently.
+      Understanding what each provides helps you match the setting to the need.
+    priority: high
+
+  - key: medicaid_eligibility
+    title: "Determine Medicaid eligibility for long-term care"
+    explanation: >
+      Medicare does NOT cover long-term custodial care. Medicaid does — but has
+      strict asset and income limits, and rules vary by state. An elder law attorney
+      can help you understand your eligibility and any planning options.
+    priority: high
+    resource_url: https://www.medicaid.gov/medicaid/long-term-services-supports/index.html
+
+  - key: facility_shortlist
+    title: "Create a shortlist of facilities to visit in person"
+    explanation: >
+      Check Medicare's Nursing Home Compare for inspection results and staffing data.
+      Never choose a facility without visiting — and visit at different times of day.
+    priority: high
+    resource_url: https://www.medicare.gov/care-compare/
+
+  - key: facility_contract_review
+    title: "Have a lawyer review the admission agreement before signing"
+    explanation: >
+      Facility contracts are long and complex. Key issues: arbitration clauses,
+      what happens if you run out of money, discharge conditions, and what's
+      included in the base rate vs. charged separately.
+    priority: high
+
+  - key: financial_runway
+    title: "Calculate your financial runway at each facility"
+    explanation: >
+      Get the full monthly cost in writing — base rate plus typical add-ons.
+      Compare against your income and assets. At what point would you exhaust
+      your resources and need to transition to Medicaid?
+    priority: high
+
+  - key: legal_documents
+    title: "Ensure all legal documents are in place before the move"
+    explanation: >
+      Power of attorney, healthcare proxy, living will, and POLST/MOLST form
+      should all be signed and on file with the facility and your doctors
+      before or immediately after admission.
+    priority: high
+    resource_url: https://polst.org/
+
+  - key: family_meeting
+    title: "Hold a family meeting to align on the plan"
+    explanation: >
+      Transitions often expose disagreements about care, finances, and roles.
+      A structured family meeting — ideally with a social worker or mediator —
+      can surface and resolve these before they become crises.
+    priority: medium
+
+  - key: belongings_plan
+    title: "Make a plan for belongings and the current home"
+    explanation: >
+      What goes to the new space? What's stored? What's sold or given away?
+      Who handles the home if it won't be occupied? These decisions are emotionally
+      heavy — give them time and involve the person moving wherever possible.
+    priority: medium
+
+  - key: care_coordinator
+    title: "Identify a primary care coordinator within the family"
+    explanation: >
+      Designate one family member as the main contact for the facility. This person
+      attends care conferences, reviews care plans, and escalates concerns.
+      Shared responsibility without a point person usually means things fall through.
+    priority: medium
+
+  - key: grievance_process
+    title: "Learn the facility's grievance and advocacy process"
+    explanation: >
+      Every Medicare/Medicaid facility must have a grievance process and residents
+      have rights. Know the Long-Term Care Ombudsman contact for your state —
+      they investigate complaints independently and for free.
+    priority: low
+    resource_url: https://theconsumervoice.org/get_help

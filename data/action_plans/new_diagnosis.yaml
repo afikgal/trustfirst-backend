@@ -1,0 +1,102 @@
+################################################################################
+# ACTION PLAN — NEW DIAGNOSIS / INJURY
+# File: data/action_plans/new_diagnosis.yaml
+################################################################################
+
+meta:
+  id: new_diagnosis
+  life_event: New Diagnosis or Injury
+  title: "Navigating Your New Diagnosis"
+  description: >
+    A new diagnosis or injury brings a lot of information and decisions at once.
+    This plan helps you organize the immediate steps — understanding your condition,
+    coordinating care, and protecting your finances — so nothing falls through the cracks.
+
+items:
+  - key: understand_diagnosis
+    title: "Get a clear explanation of your diagnosis"
+    explanation: >
+      Ask your doctor to explain your condition in plain language. What is it?
+      What causes it? What will it affect? It's fine to ask them to slow down
+      or write things down. Bring someone with you if it helps.
+    priority: high
+
+  - key: second_opinion
+    title: "Consider getting a second opinion"
+    explanation: >
+      For serious or complex diagnoses, a second opinion is normal and expected.
+      Most doctors support it. Your insurance typically covers it. It can confirm
+      the diagnosis or reveal other options.
+    priority: high
+
+  - key: specialist_referral
+    title: "Get a referral to the right specialist"
+    explanation: >
+      Your primary care doctor may not be the right long-term manager for your condition.
+      Ask who the best specialist is — and whether they're in your insurance network.
+    priority: high
+
+  - key: medication_review
+    title: "Review all your medications with your pharmacist"
+    explanation: >
+      New medications can interact with existing ones. Your pharmacist — not just
+      your doctor — is the best person to do a full medication reconciliation.
+      Ask about generic alternatives if cost is a concern.
+    priority: high
+
+  - key: insurance_coverage
+    title: "Understand what your insurance covers"
+    explanation: >
+      Call your insurance (Medicare, Medigap, or private) to confirm coverage for
+      treatments, specialists, medications, and any equipment you may need.
+      Ask about prior authorization requirements before scheduling anything expensive.
+    priority: high
+
+  - key: care_team_list
+    title: "Build a list of your care team contacts"
+    explanation: >
+      Name, specialty, phone number, and patient portal login for each provider.
+      Keep this somewhere a family member or caregiver can find it quickly.
+    priority: medium
+
+  - key: medical_records
+    title: "Request copies of your key medical records"
+    explanation: >
+      You're entitled to your records. Having them — especially imaging, lab results,
+      and discharge summaries — makes specialist appointments more productive and
+      prevents redundant testing.
+    priority: medium
+
+  - key: advance_directives
+    title: "Update or create advance directives"
+    explanation: >
+      A healthcare proxy (who makes decisions if you can't) and a living will
+      (what treatments you do or don't want) should be in place. A new diagnosis
+      is a natural time to revisit these.
+    priority: medium
+    resource_url: https://www.caringinfo.org/planning/advance-directives/
+
+  - key: disability_benefits
+    title: "Check whether you qualify for disability benefits"
+    explanation: >
+      If your condition affects your ability to work or function independently,
+      you may qualify for Social Security Disability Insurance (SSDI), SSI,
+      veterans benefits, or state programs. Each has its own application process.
+    priority: medium
+    resource_url: https://www.ssa.gov/disability/
+
+  - key: caregiver_plan
+    title: "Plan for any help you'll need at home"
+    explanation: >
+      If your diagnosis affects mobility, cognition, or daily activities, think
+      now about who will help — and whether you need to arrange professional
+      in-home care, adaptive equipment, or home modifications.
+    priority: low
+
+  - key: disease_specific_resources
+    title: "Find a disease-specific support organization"
+    explanation: >
+      Most conditions have a national organization with education, peer support,
+      clinical trial listings, and local chapter connections. These are often
+      better resources than general health websites.
+    priority: low
